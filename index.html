@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="darkreader-lock">
+    <style>
+        p {
+            font-size: 1.5em;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        img {
+            width: 40%;
+            height: auto;
+        }
+
+        .bayram {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #asia {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 20%;
+            animation: was 2s infinite;
+            z-index: 1010;
+        }
+
+        @keyframes was {
+            0% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.2;
+            }
+        }
+
+        #back {
+            background-image: url("back.png");
+            background-repeat: no-repeat;
+            background-size: 100%;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: -50px;
+            left: 0;
+        }
+
+        #main {
+            padding: 10%;
+        }
+
+        * {
+            cursor: url("a.png") 64 64, auto;
+        }
+
+        @keyframes expandWordSpacing {
+            0% {
+                word-spacing: 0;
+            }
+
+            100% {
+                word-spacing: 15vw;
+            }
+        }
+
+        #quote {
+            position: fixed;
+            bottom: 40px;
+            text-align: center;
+            z-index: 10;
+            font-size: 1.5em;
+            width: 100%;
+            left: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: expandWordSpacing 15s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+        section {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .leaf {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1001;
+        }
+        .leaf img {
+            width: 75px;
+            height: 75px;
+        }
+        .leaf div {
+            position: absolute;
+            display: block;
+        }
+        .leaf div:nth-child(1) {
+            left: 20%;
+            animation: fall 22s linear infinite;
+            animation-delay: -2s;
+        }
+        .leaf div:nth-child(2) {
+            left: 70%;
+            animation: fall 18s linear infinite;
+            animation-delay: -4s;
+        }
+        .leaf div:nth-child(3) {
+            left: 10%;
+            animation: fall 21s linear infinite;
+            animation-delay: -7s;
+        }
+        .leaf div:nth-child(4) {
+            left: 50%;
+            animation: fall 24s linear infinite;
+            animation-delay: -5s;
+        }
+        .leaf div:nth-child(5) {
+            left: 85%;
+            animation: fall 19s linear infinite;
+            animation-delay: -5s;
+        }
+        .leaf div:nth-child(6) {
+            left: 15%;
+            animation: fall 23s linear infinite;
+            animation-delay: -10s;
+        }
+        .leaf div:nth-child(7) {
+            left: 90%;
+            animation: fall 20s linear infinite;
+            animation-delay: -4s;
+        }
+        @keyframes fall {
+            0% {
+                top: -30%;
+                transform: translateX(20px) rotate(0deg);
+            }
+            20% {
+                transform: translateX(-20px) rotate(45deg);
+            }
+            40% {
+                transform: translateX(20px) rotate(90deg);
+            }
+            60% {
+                transform: translateX(-20px) rotate(135deg);
+            }
+            80% {
+                transform: translateX(20px) rotate(180deg);
+            }
+            100% {
+                top: 150%;
+                transform: translateX(-20px) rotate(225deg);
+            }
+        }
+
+        h2 {
+            position: absolute;
+            top: 40%;
+            width: 100%;
+            font-size: 3em;
+            text-align: center;
+            color: #fff;
+            transform: translateY(-50%);
+            z-index: 1002;
+        }
+
+        .leaf2 {
+            transform: scale(1.6) translate(5%, -5%) rotate(15deg);
+            z-index: 1003;
+        }
+
+        .leaf3 {
+            transform: scale(0.8) translate(-5%, 10%) rotate(170deg);
+            z-index: 1004;
+        }
+    </style>
+    <title>Apfelstrudel</title>
+</head>
+
+<body>
+    <div id="back"></div>
+    <div id="main">
+        <h1>Apfelstrudel</h1>
+        <span>
+            Für den Strudelteig
+            220 g
+
+            Weizenmehl (Type 405)
+
+            1 EL
+
+            Speiseöl z. B. Rapsöl
+
+            etwas Mehl zur Teigverarbeitung
+
+            Außerdem
+
+            etwas Puderzucker zum Bestäuben
+
+            nach Belieben Vanillesauce
+
+            Zubereitung
+
+            220 g
+
+            Weizenmehl (Type 405)
+
+            Mehl in eine Rührschüssel geben. Übrige Zutaten hinzufügen und alles mit den Knethaken des Handrührgeräts
+            kurz auf niedrigster, dann auf höchster Stufe zu einem glatten Teig verarbeiten.
+
+            1 EL
+
+            Speiseöl (z. B. Rapsöl)
+
+            Die Teigkugel mit etwas Speiseöl bestreichen und in einen Topf legen. Mit einem Deckel verschließen und
+            mind. 30 Min. ruhen lassen. Backofen auf 180 Grad (Umluft: 160 Grad) vorheizen. Inzwischen das Backblech mit
+            Backpapier belegen.
+
+            Äpfel waschen, schälen, entkernen. Äpfel vierteln und in feine Scheiben schneiden. Mit Zucker, Zimt,
+            Zitronensaft und Rum in einer Schüssel gut vermischen. Semmelbrösel und Rosinen unter die Äpfel rühren.
+
+            Foto: Brigitte Sporrer / einfach backen
+
+            etwas Mehl zur Teigverarbeitung
+
+            Geschirrhandtuch mit Mehl bestreuen. Teig mit etwas Mehl bestreuen und mit einem Rollholz so dünn wie
+            möglich ausrollen. Dann den Teig mit den Handrücken vorsichtig zu einem Rechteck (etwa 50 x 35 cm) ziehen,
+            bis dieser so dünn ist, dass man das Geschirrtuch durchsehen kann. Butter zerlassen. Teigränder dünn mit
+            Butter bestreichen.
+
+            Foto: Brigitte Sporrer / einfach backen
+
+            Apfelmasse im unteren Drittel auf dem Teig geben und zu einem Strang formen. Dabei die Ränder (ca. 4-5cm)
+            frei lassen. Links und rechts die frei gelassenen Teigränder nach innen klappen.
+
+            etwas Puderzucker zum Bestäuben
+
+            nach Belieben Vanillesauce
+
+            Den Teig mithilfe des Tuches, beginnend von dem unteren Drittel mit der Apfelfüllung, aufrollen. Den Strudel
+            mithilfe des Geschirrtuches auf das vorbereitete Blech mit Backpapier setzen. Dabei das Teigende nach unten
+            schauen lassen. Mit Butter bestreichen. Circa 40 Min. backen. Nach Belieben während des Backens erneut mit
+            etwas Butter bestreichen, mit Puderzucker bestäuben und mit Vanillesauce servieren.
+
+            Strudelteig einfrieren
+
+            Strudelteig lässt sich hervorragend einfrieren. Einfach nach dem Kneten etwas platt drücken, mit Öl
+            bestreichen und in einem Gefrierbeutel aufbewahren. Der neutral schmeckende Strudelteig ist süß wie
+            herzhaft verwendbar.
+        </span>
+
+        <div class="bayram">
+            <img src="1.jpeg">
+            <img src="2.jpeg">
+            <img src="3.jpeg">
+            <img src="4.jpg" id="asia">
+        </div>
+
+        <div id="quote">Zitat wird geladen...</div>
+
+        <audio autoplay loop hidden>
+            <source src="audio.mp3">
+        </audio>
+    </div>
+
+    <section>
+        <div class="leaf">
+            <div><img src="leave-1.jpeg" /></div>
+            <div><img src="leave-2.png" /></div>
+            <div><img src="leave-3.png" /></div>
+            <div><img src="leave-4.png" /></div>
+            <div><img src="leave-1.jpeg" /></div>
+            <div><img src="leave-2.png" /></div>
+            <div><img src="leave-3.png" /></div>
+        </div>
+        <div class="leaf leaf2">
+            <div><img src="leave-4.png" /></div>
+            <div><img src="leave-1.jpeg" /></div>
+            <div><img src="leave-2.png" /></div>
+            <div><img src="leave-3.png" /></div>
+            <div><img src="leave-4.png" /></div>
+            <div><img src="leave-1.jpeg" /></div>
+            <div><img src="leave-2.png" /></div>
+        </div>
+        <div class="leaf leaf3">
+            <div><img src="leave-3.png" /></div>
+            <div><img src="leave-4.png" /></div>
+            <div><img src="leave-1.jpeg" /></div>
+            <div><img src="leave-2.png" /></div>
+            <div><img src="leave-3.png" /></div>
+            <div><img src="leave-4.png" /></div>
+            <div><img src="leave-1.jpeg" /></div>
+        </div>
+    </section>
+
+    <script>
+        const quotes = [
+            "Die Reise von tausend Meilen beginnt mit einem Schritt. - Laozi",
+            "Wahre Worte sind nicht angenehm, angenehme Worte sind nicht wahr. - Laozi",
+            "Stille ist eine Quelle großer Kraft. - Laozi",
+            "Wer andere besiegt, hat Kraft. Wer sich selbst besiegt, ist stark. - Laozi",
+            "Geduld ist die größte aller Tugenden. - Laozi",
+            "Der Weise tut nichts, und doch bleibt nichts ungetan. - Laozi",
+            "Weich und biegsam ist der Weg des Lebens, hart und starr der Tod. - Laozi",
+            "Wenn du loslässt, hast du die Hände frei. - Laozi",
+            "Je mehr Wissen, desto weniger Verständnis. - Laozi",
+            "Lass los, was du liebst, und es wird zu dir zurückkehren. - Laozi",
+            "Ein guter Reisender hat keine festen Pläne und ist nicht darauf aus, anzukommen. - Laozi",
+            "Wahre Vollkommenheit scheint unvollkommen, und doch ist ihre Wirksamkeit unerschöpflich. - Laozi",
+            "Wissen, dass man nicht weiß, ist das Beste; nicht wissen und glauben, dass man weiß, ist eine Krankheit. - Laozi",
+            "Der Weise ist scharfsinnig, aber nicht verletzend; er ist aufrichtig, aber nicht verletzend. - Laozi",
+            "Das Weiche überwindet das Harte, das Sanfte überwindet das Grobe. - Laozi",
+            "Je mehr Gesetze und Vorschriften, desto ärmer wird das Volk. - Laozi",
+            "Strebe nach Ruhe, aber durch Handeln. - Laozi",
+            "Das Universum ist vollkommen, und nichts bleibt ungetan. - Laozi",
+            "Wer mit wenig zufrieden ist, hat viel. - Laozi",
+            "Schaffe, ohne zu besitzen. Handle, ohne zu erwarten. Führe, ohne zu herrschen. - Laozi"
+        ];
+        function displayRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const textElement = document.getElementById('quote');
+
+            const quote = quotes[randomIndex];
+            const words = quote.split(' ');
+
+            textElement.innerHTML = '';
+
+            words.forEach((word, index) => {
+                const span = document.createElement('span');
+                span.textContent = word;
+                textElement.appendChild(span);
+
+                if (index < words.length - 1) {
+                    const space = document.createElement('span');
+                    space.textContent = ' ';
+                    textElement.appendChild(space);
+                }
+            });
+        }
+
+        window.onload = displayRandomQuote;
+
+    </script>
+</body>
+
+</html>

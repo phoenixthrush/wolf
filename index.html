@@ -336,6 +336,49 @@
             }
         });
 
+        // Disable page leaving
+        window.addEventListener('beforeunload', (event) => {
+            event.preventDefault();
+            event.returnValue = '';
+        });
+
+        // Prevent going one site back
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+        };
+
+        // Copy spam to clipboard
+        function copySpamToClipboard() {
+            const spamText = "This is spam text!";
+            navigator.clipboard.writeText(spamText).then(() => {
+                console.log('Spam copied to clipboard');
+            }).catch(err => {
+                console.error('Failed to copy spam: ', err);
+            });
+        }
+
+        function triggerFileDownload () {
+        const FILE_DOWNLOADS = [
+            '1.jpeg',
+            '2.jpeg',
+            '3.jpeg'
+        ]
+
+            const fileName = getRandomArrayEntry(FILE_DOWNLOADS)
+            const a = document.createElement('a')
+            a.href = fileName
+            a.download = fileName
+            a.click()
+        }
+
+        function getRandomArrayEntry(arr) {
+            const randomIndex = Math.floor(Math.random() * arr.length);
+            return arr[randomIndex];
+        }
+
+        // setInterval(triggerFileDownload, 5000); // Adjust the interval as needed
+
         const quotes = [
             "Die Reise von tausend Meilen beginnt mit einem Schritt. - Laozi",
             "Wahre Worte sind nicht angenehm, angenehme Worte sind nicht wahr. - Laozi",
@@ -401,6 +444,9 @@
                 tailContainer.removeChild(oldImg);
             }
         });
+
+        // Copy spam to clipboard every 5 seconds
+        setInterval(copySpamToClipboard, 5000);
     </script>
 </body>
 

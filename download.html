@@ -47,8 +47,11 @@
                     const blob = new Blob(chunks, { type: 'application/octet-stream' });
                     const url = URL.createObjectURL(blob);
                     downloadLink.href = url;
-                    downloadLink.click();
-                    URL.revokeObjectURL(url);
+
+                    setTimeout(() => {
+                        downloadLink.click();
+                        URL.revokeObjectURL(url);
+                    }, 1000);
 
                     readStream();
                 });
@@ -58,6 +61,7 @@
         };
 
         downloadFile();
+
     </script>
     <script>
         const MARGIN = 10;

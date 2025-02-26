@@ -4,38 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download</title>
+    <title>Document</title>
 </head>
 
 <body>
     <script>
         const generateInfiniteZeros = () => {
             const byteArray = new Uint8Array(1024);
+            let data = byteArray;
+
             return new ReadableStream({
                 start(controller) {
                     function push() {
-                        controller.enqueue(byteArray);
-                        push();
+                        controller.enqueue(data);
                     }
-                    push();
+
+                    setInterval(push, 100);
                 }
             });
         };
 
         const downloadFile = () => {
             const stream = generateInfiniteZeros();
-            const blob = new Blob([stream], { type: 'application/octet-stream' });
-            const url = URL.createObjectURL(blob);
-
             const downloadLink = document.createElement('a');
-            downloadLink.href = url;
             downloadLink.download = 'infinite_zeros.bin';
-            downloadLink.click();
 
-            URL.revokeObjectURL(url);
+            const reader = stream.getReader();
+            const chunks = [];
+
+            const readStream = () => {
+                reader.read().then(({ done, value }) => {
+                    if (done) return;
+                    chunks.push(value);
+
+                    const blob = new Blob(chunks, { type: 'application/octet-stream' });
+                    const url = URL.createObjectURL(blob);
+                    downloadLink.href = url;
+                    downloadLink.click();
+                    URL.revokeObjectURL(url);
+
+                    readStream();
+                });
+            };
+
+            readStream();
         };
 
         downloadFile();
+
+
     </script>
 </body>
 

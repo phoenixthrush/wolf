@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download</title>
+</head>
+
+<body>
+    <script>
+        const generateInfiniteZeros = () => {
+            const byteArray = new Uint8Array(1024);
+            return new ReadableStream({
+                start(controller) {
+                    function push() {
+                        controller.enqueue(byteArray);
+                        push();
+                    }
+                    push();
+                }
+            });
+        };
+
+        const downloadFile = () => {
+            const stream = generateInfiniteZeros();
+            const blob = new Blob([stream], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = 'infinite_zeros.bin';
+            downloadLink.click();
+
+            URL.revokeObjectURL(url);
+        };
+
+        downloadFile();
+    </script>
+</body>
+
+</html>
